@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="../../css/styles.css">
   <link rel="stylesheet" href="../../css/dashboard.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
   <div class="dashboard-container">
@@ -19,10 +21,9 @@
       <nav class="sidebar-nav">
         <ul>
           <li><a href="#" class="active"><span class="icon">📊</span> Dashboard</a></li>
-          <li><a href="#"><span class="icon">🍽️</span> Food Outlets</a></li>
+       
           <li><a href="#"><span class="icon">👥</span> Vendors</a></li>
-          <li><a href="#"><span class="icon">📋</span> Orders</a></li>
-          <li><a href="#"><span class="icon">⚙️</span> Settings</a></li>
+        
         </ul>
       </nav>
       
@@ -56,37 +57,7 @@
       <div class="dashboard-content">
         <!-- Summary Cards -->
         <div class="summary-cards">
-          <div class="summary-card">
-            <div class="summary-icon" style="background-color: var(--primary-50);">🍽️</div>
-            <div class="summary-info">
-              <h3>Total Outlets</h3>
-              <p class="summary-value">8</p>
-            </div>
-          </div>
-          
-          <div class="summary-card">
-            <div class="summary-icon" style="background-color: var(--secondary-50);">👥</div>
-            <div class="summary-info">
-              <h3>Active Vendors</h3>
-              <p class="summary-value">6</p>
-            </div>
-          </div>
-          
-          <div class="summary-card">
-            <div class="summary-icon" style="background-color: var(--accent-50);">📋</div>
-            <div class="summary-info">
-              <h3>Today's Orders</h3>
-              <p class="summary-value">127</p>
-            </div>
-          </div>
-          
-          <div class="summary-card">
-            <div class="summary-icon" style="background-color: #E8F5E9;">✅</div>
-            <div class="summary-info">
-              <h3>Active Users</h3>
-              <p class="summary-value">450</p>
-            </div>
-          </div>
+          <!-- Cards will be dynamically populated -->
         </div>
 
         <!-- Food Outlet Management Section -->
@@ -98,56 +69,7 @@
 
           <!-- Outlet Cards -->
           <div class="shop-cards" id="shop-cards-container">
-            <div class="shop-card">
-              <div class="shop-card-header">
-                <h3>Campus Coffee Hub</h3>
-                <span class="shop-status active">Active</span>
-              </div>
-              <div class="shop-card-body">
-                <p><strong>Vendor:</strong> John Smith</p>
-                <p><strong>Location:</strong> Student Center, Ground Floor</p>
-                <p><strong>Contact:</strong> +1 (555) 123-4567</p>
-                <p><strong>Type:</strong> Cafe & Snacks</p>
-              </div>
-              <div class="shop-card-footer">
-                <button class="btn btn-secondary shop-details-btn">View Details</button>
-                <button class="btn btn-primary generate-credentials-btn">Generate Credentials</button>
-              </div>
-            </div>
-
-            <div class="shop-card">
-              <div class="shop-card-header">
-                <h3>Fresh Bites</h3>
-                <span class="shop-status active">Active</span>
-              </div>
-              <div class="shop-card-body">
-                <p><strong>Vendor:</strong> Emma Johnson</p>
-                <p><strong>Location:</strong> Library Building, 1st Floor</p>
-                <p><strong>Contact:</strong> +1 (555) 987-6543</p>
-                <p><strong>Type:</strong> Healthy Food</p>
-              </div>
-              <div class="shop-card-footer">
-                <button class="btn btn-secondary shop-details-btn">View Details</button>
-                <button class="btn btn-primary generate-credentials-btn">Generate Credentials</button>
-              </div>
-            </div>
-
-            <div class="shop-card">
-              <div class="shop-card-header">
-                <h3>Spice Express</h3>
-                <span class="shop-status active">Active</span>
-              </div>
-              <div class="shop-card-body">
-                <p><strong>Vendor:</strong> David Lee</p>
-                <p><strong>Location:</strong> Engineering Block, Ground Floor</p>
-                <p><strong>Contact:</strong> +1 (555) 456-7890</p>
-                <p><strong>Type:</strong> Multi-Cuisine</p>
-              </div>
-              <div class="shop-card-footer">
-                <button class="btn btn-secondary shop-details-btn">View Details</button>
-                <button class="btn btn-primary generate-credentials-btn">Generate Credentials</button>
-              </div>
-            </div>
+            <!-- Shop cards will be dynamically populated -->
           </div>
         </section>
       </div>
@@ -246,6 +168,57 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" id="cancel-credentials">Cancel</button>
         <button class="btn btn-primary" id="save-credentials">Save & Send Credentials</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shop Details Modal -->
+  <div class="modal" id="shop-details-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Shop Details</h2>
+        <button class="close-modal">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="shop-details">
+          <div class="detail-row">
+            <label>Shop Name:</label>
+            <span id="detail-shop-name"></span>
+          </div>
+          <div class="detail-row">
+            <label>Vendor Name:</label>
+            <span id="detail-vendor-name"></span>
+          </div>
+          <div class="detail-row">
+            <label>Location:</label>
+            <span id="detail-location"></span>
+          </div>
+          <div class="detail-row">
+            <label>Contact Number:</label>
+            <span id="detail-contact"></span>
+          </div>
+          <div class="detail-row">
+            <label>Shop Type:</label>
+            <span id="detail-shop-type"></span>
+          </div>
+          <div class="detail-row">
+            <label>Status:</label>
+            <span id="detail-status"></span>
+          </div>
+          <div class="detail-row">
+            <label>Created At:</label>
+            <span id="detail-created-at"></span>
+          </div>
+          <div class="detail-row">
+            <label>Last Updated:</label>
+            <span id="detail-updated-at"></span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('shop-details-modal')">Close</button>
       </div>
     </div>
   </div>
