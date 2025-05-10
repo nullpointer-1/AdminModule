@@ -1,7 +1,7 @@
 /**
  * Admin Dashboard JavaScript
  */
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://localhost:8090';
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize dashboard components
   initializeModals();
@@ -154,13 +154,15 @@ function openCredentialsModal(shopId, vendorName) {
 /**
  * Save credentials
  */
+
+
 async function saveCredentials() {
   const form = document.getElementById('credentials-form');
   const shopId = form.dataset.shopId;
   const email = document.getElementById('vendor-email').value;
   const username = document.getElementById('generated-username').value;
   const password = document.getElementById('generated-password').value;
-
+console.log(shopId);
   if (!email || !username || !password) {
     showNotification('Please fill all required fields', 'error');
     return;
@@ -185,10 +187,15 @@ async function saveCredentials() {
     closeModal('credentials-modal');
     form.reset();
     showNotification('Credentials saved successfully!', 'success');
+    const generateBtn=document.querySelectorAll('.generate-credentials-btn');
+    
+
   } catch (error) {
     showNotification('Error saving credentials', 'error');
   }
 }
+
+
 
 /**
  * View shop details
