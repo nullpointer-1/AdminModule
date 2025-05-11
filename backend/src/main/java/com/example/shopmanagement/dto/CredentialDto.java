@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotBlank;
 public class CredentialDto {
     @NotBlank(message = "Vendor name is required")
     private String vendorName;
-    
+    private Long vendorId;
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
     private String email;

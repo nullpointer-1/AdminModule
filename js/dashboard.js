@@ -120,46 +120,57 @@ function initializeShopCards() {
       const shopId = e.target.dataset.shopId;
       viewShopDetails(shopId);
     }
-    
+
     if (e.target.classList.contains('generate-credentials-btn')) {
       const shopId = e.target.dataset.shopId;
       const vendorName = e.target.dataset.vendorName;
-      openCredentialsModal(shopId, vendorName);
+      const vendorId = e.target.dataset.vendorId; 
+            e.target.disabled = true;
+ // Get vendorId from data attribute
+      openCredentialsModal(shopId, vendorName, vendorId);  // Pass vendorId here
     }
   });
 }
 
+
 /**
  * Open credentials modal and initialize fields
  */
-function openCredentialsModal(shopId, vendorName) {
-  // Clear previous values
-  document.getElementById('vendor-email').value = '';
-  document.getElementById('generated-username').value = '';
-  document.getElementById('generated-password').value = '';
+function openCredentialsModal(shopId, vendorName, vendorId) {
+  const form = document.getElementById('credentials-form');
   
-  // Store shop ID for later use
-  document.getElementById('credentials-form').dataset.shopId = shopId;
-  
-  // Generate initial username and password
+  // Set shopId and vendorId as data attributes on the form
+  form.dataset.shopId = shopId;
+  form.dataset.vendorId = vendorId;
+
+  console.log('Vendor ID in openCredentialsModal:', vendorId);  // Check if vendorId is passed correctly
+
   const username = generateUsername(vendorName);
   const password = generatePassword(8);
-  
+
+  // Set generated username and password
   document.getElementById('generated-username').value = username;
   document.getElementById('generated-password').value = password;
-  
+
+  // Open modal
   openModal('credentials-modal');
 }
 
+
+
+/**
+ * Save credentials
+ */
 /**
  * Save credentials
  */
 async function saveCredentials() {
   const form = document.getElementById('credentials-form');
-  const shopId = form.dataset.shopId;
+  const vendorId = form.dataset.vendorId;
   const email = document.getElementById('vendor-email').value;
   const username = document.getElementById('generated-username').value;
   const password = document.getElementById('generated-password').value;
+  const generateButton = document.querySelector('.generate-credentials-btn[data-vendor-id="' + vendorId + '"]');
 
   if (!email || !username || !password) {
     showNotification('Please fill all required fields', 'error');
@@ -173,10 +184,10 @@ async function saveCredentials() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        shopId,
+        vendorId: vendorId,
         email,
         username,
-        password
+        password,
       })
     });
 
@@ -185,8 +196,19 @@ async function saveCredentials() {
     closeModal('credentials-modal');
     form.reset();
     showNotification('Credentials saved successfully!', 'success');
+    
+    // Re-enable the button after credentials are saved
+    if (generateButton) {
+      generateButton.disabled = false;
+    }
+
   } catch (error) {
     showNotification('Error saving credentials', 'error');
+    
+    // Re-enable the button in case of error too
+    if (generateButton) {
+      generateButton.disabled = false;
+    }
   }
 }
 
@@ -300,7 +322,8 @@ function renderShopCards(shops) {
         </button>
         <button class="btn btn-primary generate-credentials-btn" 
                 data-shop-id="${shop.id}" 
-                data-vendor-name="${shop.vendorName}">
+                data-vendor-name="${shop.vendorName}" data-vendor-id="${shop.vendorId}">
+                  
           Generate Credentials
         </button>
       </div>
@@ -345,7 +368,7 @@ function showNotification(message, type = 'info') {
   });
 }
 
-
+const pno="";
 async function saveShop() {
   const shopData = {
     name: document.getElementById("shop-name").value,
@@ -354,12 +377,13 @@ async function saveShop() {
     shopType: document.getElementById("shop-type").value,
     active: document.getElementById("shop-status").value === "active",
     vendorName: document.getElementById("vendor-name").value,
-    // vendorEmail: document.getElementById("vendor-email").value,
-    // vendorUsername: document.getElementById("generated-username").value,
-    // vendorPassword: document.getElementById("generated-password").value,
+    vendorEmail: "sample@gmail.com",
+    vendorUsername: "sample",
+    vendorPassword: "sample",
     vendorContactNumber: document.getElementById("contact-number").value, // Same as shop contact
   };
 
+ 
   if (!shopData.name || !shopData.vendorName || !shopData.location ||
       !shopData.contactNumber || !shopData.shopType) {
     showNotification('Please fill all required fields', 'error');

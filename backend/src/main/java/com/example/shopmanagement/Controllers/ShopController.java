@@ -18,7 +18,8 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
+
 @RequestMapping("/api/shops")
 public class ShopController {
 

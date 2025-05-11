@@ -18,7 +18,7 @@ public class OtpService {
     private String fromWhatsApp;
 
     @Autowired
-    private UserRepository userRepository; // Repository to interact with the User table
+    private UserRepository userRepository;
 
     // Send OTP
     public String sendOtp(String toPhoneNumber, String otp) {

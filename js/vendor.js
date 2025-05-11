@@ -1,6 +1,4 @@
-/**
- * Vendor Login JavaScript
- */
+const BASE_URL = 'http://localhost:8080/api';
 
 document.addEventListener('DOMContentLoaded', function() {
   const vendorLoginForm = document.getElementById('vendor-login-form');
@@ -11,43 +9,62 @@ document.addEventListener('DOMContentLoaded', function() {
       
       const username = document.getElementById('vendor-username').value;
       const password = document.getElementById('vendor-password').value;
-      
+
       // Simple validation 
       if (!username || !password) {
         showNotification('Please enter both username and password', 'error');
         return;
       }
-      
-      // For demo purposes, hardcode a vendor credential
-      // In a real application, this would verify with the backend
-      if (username === 'vendor1' && password === 'vendor123') {
-        // Show success message
-        showNotification('Login successful! Redirecting to vendor dashboard...', 'success');
-        
-        // Redirect to vendor dashboard (not implemented in this demo)
-        setTimeout(() => {
-          window.location.href = '../../index.html';
-        }, 1500);
-      } else {
-        showNotification('Invalid username or password', 'error');
-      }
+
+      // Create a credentials object to send to the backend
+      const credentials = {
+        username: username,
+        password: password
+      };
+
+      // Send credentials to backend API
+      fetch(`${BASE_URL}/vendors/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.token) {
+          // If token is received, store it in localStorage/sessionStorage
+          localStorage.setItem('vendorToken', data.token);
+          console.log('Received Token:', data.token);
+          
+          // Show success notification
+          showNotification('Login successful! Redirecting to vendor dashboard...', 'success');
+          
+          // Redirect to the dashboard after a short delay
+         // Assuming token is set and everything else is correct
+setTimeout(() => {
+    window.location.href = '/food/pages/vendor/dashboard.html'; // Redirecting to vendor dashboard
+}, 500);  // Short delay before redirect
+
+        } else {
+          showNotification('Invalid username or password', 'error');
+        }
+      })
+      .catch(error => {
+        showNotification('Error logging in. Please try again.', 'error');
+      });
     });
   }
-  
-  /**
-   * Show notification message
-   */
+
+  // Show notification message
   function showNotification(message, type = 'info') {
-    // Check if a notification container already exists
     let notificationContainer = document.querySelector('.notification-container');
-    
-    // If not, create one
+
     if (!notificationContainer) {
       notificationContainer = document.createElement('div');
       notificationContainer.className = 'notification-container';
       document.body.appendChild(notificationContainer);
       
-      // Style the notification container
       Object.assign(notificationContainer.style, {
         position: 'fixed',
         top: '20px',
@@ -55,26 +72,21 @@ document.addEventListener('DOMContentLoaded', function() {
         zIndex: '1000'
       });
     }
-    
-    // Create notification element
+
     const notification = document.createElement('div');
     notification.className = `alert alert-${type}`;
     notification.textContent = message;
-    
-    // Add animation classes
+
     notification.style.animationName = 'slideIn';
     notification.style.animationDuration = '0.3s';
     
-    // Add to container
     notificationContainer.appendChild(notification);
-    
-    // Remove after 5 seconds
+
     setTimeout(() => {
       notification.style.animationName = 'slideOut';
       setTimeout(() => {
         notification.remove();
-        
-        // If container is empty, remove it too
+
         if (notificationContainer.children.length === 0) {
           notificationContainer.remove();
         }

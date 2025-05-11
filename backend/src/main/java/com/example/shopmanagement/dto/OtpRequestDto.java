@@ -1,15 +1,23 @@
 package com.example.shopmanagement.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import jakarta.validation.constraints.NotBlank;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class OtpRequestDto {
-    @NotBlank(message = "Phone number is required")
     private String phoneNumber;
+    private String otp;
+
+    // Getter and Setter methods
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
 }

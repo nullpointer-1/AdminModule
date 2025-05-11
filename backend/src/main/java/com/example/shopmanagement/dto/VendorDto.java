@@ -31,4 +31,10 @@ public class VendorDto {
 
     @NotNull(message = "Active status is required")
     private Boolean active;
+
+    public VendorDto(String username, String name, String email) {
+        this.username=username;
+        this.name=name;
+        this.email=email;
+    }
 }
